@@ -1,2 +1,3 @@
 Place external deps here.
-Download will be avaliable soon.
+
+You can download them from: blackraininteractive.com/Downloads/Renegade/ExtDeps.zip
