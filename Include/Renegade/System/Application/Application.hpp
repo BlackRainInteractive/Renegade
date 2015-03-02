@@ -56,7 +56,15 @@ namespace rge {
         void Exit                   ();
 
         // Variables - Static
-        static Platform platform;
+        #if defined _WIN32 | _WIN64
+            static const Platform platform = Platform::Windows;
+        #elif defined __gnu_linux__
+            static const Platform platform = Platform::Linux;
+        #elif defined __APPLE__
+            static const Platform platform = Platform::Apple_OSX;
+        #else
+            static const Platform platform = Platform::Unknown;
+        #endif
 
     private:
 

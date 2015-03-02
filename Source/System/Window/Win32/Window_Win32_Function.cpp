@@ -46,7 +46,7 @@ namespace rge {
 /*============================================================================================================*/
 
     // The default constructor
-    Window::Window () : id (Utility::GenGUID ()) {
+    Window::Window () : _id (Utility::GenGUID ()) {
 
     }
 
@@ -75,7 +75,7 @@ namespace rge {
                                   LoadCursor (nullptr, IDC_ARROW),
                                   (HBRUSH) GetStockObject (WHITE_BRUSH),
                                   0,
-                                  (LPCSTR) this -> id.c_str (),
+                                  (LPCSTR) this -> _id.c_str (),
                                   LoadIcon (nullptr, IDI_WINLOGO)};
 
         // Register the window class
@@ -83,7 +83,7 @@ namespace rge {
             throw (Exception (__LINE__, __FILE__, "Win32 window could not be registered."));
 
         // Create temp window, for the purpose of getting OpenGL extensions
-        HWND temp = CreateWindowEx (WS_EX_APPWINDOW, (LPCSTR) this -> id.c_str (), "TEMP",
+        HWND temp = CreateWindowEx (WS_EX_APPWINDOW, (LPCSTR) this -> _id.c_str (), "TEMP",
                                     WS_POPUP, 0, 0, 640, 480, nullptr, nullptr, appInstance, nullptr);
 
         // Check for errors
@@ -95,7 +95,7 @@ namespace rge {
         DestroyWindow	(temp);
 
         // Create the final window
-        this -> _handle = CreateWindowEx (WS_EX_APPWINDOW, (LPCSTR) this -> id.c_str (), (LPCSTR) Settings.title.c_str (),
+        this -> _handle = CreateWindowEx (WS_EX_APPWINDOW, (LPCSTR) this -> _id.c_str (), (LPCSTR) Settings.title.c_str (),
                                          (DWORD) WindowStyle::Default, 0, 0, 640, 480, nullptr, nullptr,
                                           appInstance, this);
 
@@ -293,7 +293,7 @@ namespace rge {
 
         // Destroy the window and unregister class
         DestroyWindow	(this -> _handle);
-        UnregisterClass ((LPCSTR) this -> id.c_str (), GetModuleHandle (0));
+        UnregisterClass ((LPCSTR) this -> _id.c_str (), GetModuleHandle (0));
     }
 
 /*============================================================================================================*/

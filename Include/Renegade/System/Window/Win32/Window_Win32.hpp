@@ -81,7 +81,6 @@ namespace rge {
         // Variables
         bool isOpen, isActive;
         WindowStyle style;
-        std::string id;
 
     private:
 
@@ -93,6 +92,7 @@ namespace rge {
 
         // Variables
         HWND _handle;
+        std::string _id;
     };
 }
 
