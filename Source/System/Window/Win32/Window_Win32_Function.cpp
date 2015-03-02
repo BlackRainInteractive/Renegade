@@ -59,7 +59,7 @@ namespace rge {
 
         // Set variables
         this -> isOpen      = true;
-        this -> isActive = true;
+        this -> isActive    = true;
 
         // Get the application instance
         HINSTANCE appInstance = GetModuleHandle (0);

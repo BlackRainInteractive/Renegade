@@ -92,7 +92,6 @@ namespace rge {
         int	versionMajor;
         int	versionMinor;
         Vector4f clearColour;
-        Window* window;
 
     private:
 

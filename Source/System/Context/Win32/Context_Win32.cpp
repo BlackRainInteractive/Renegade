@@ -48,8 +48,6 @@ namespace rge {
     void Context::Create (Window* Window, const ContextSettings& Settings) {
 
         this -> Create (Window -> GetHWND (), GetDC (Window -> GetHWND ()), Settings);
-        this -> window = Window;
-        window -> context = this;
     }
 
 /*============================================================================================================*/

@@ -79,7 +79,6 @@ namespace rge {
         void Release            ();
 
         // Variables
-        Context* context;
         bool isOpen, isActive;
         WindowStyle style;
         std::string id;
