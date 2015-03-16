@@ -29,20 +29,83 @@
 /*============================================================================================================*/
 
 #pragma once
-#if defined _WIN32 | _WIN64
 
-#include <string>
+#include <Renegade/System/Utility/Property/Property_Enum.hpp>
+#include <cassert>
 
 // The Renegade namespace
 namespace rge {
 
-    // The Utility class
-    class Utility {
+    // The property class
+    template <typename Base, typename Type>
+    class Property {
     public:
 
-        // Functions - static
-        static std::string GenGUID ();
+        // Constructor / Destructor
+        Property () : _baseObject (nullptr), _Get (nullptr), _Set (nullptr) {}
+        Property (Base* BaseType, Type (Base::*Getter)(), void (Base::*Setter)(Type Value), PropertyMode Mode = PropertyMode::ReadWrite) {
+
+            Create (BaseType, Getter, Setter, Mode);
+        }
+
+        // Functions
+        void Create (Base* BaseType, Type (Base::*Getter)(), void (Base::*Setter)(Type Value), PropertyMode Mode = PropertyMode::ReadWrite) {
+
+            _baseObject = BaseType;
+
+            switch (Mode) {
+
+                case PropertyMode::ReadOnly:
+
+                    _Get = Getter;
+                    _Set = nullptr;
+                    break;
+
+                case PropertyMode::WriteOnly:
+
+                    _Get = nullptr;
+                    _Set = Setter;
+                    break;
+
+                case PropertyMode::ReadWrite:
+
+                    _Get = Getter;
+                    _Set = Setter;
+                    break;
+
+                default:
+
+                    _Get = nullptr;
+                    _Set = nullptr;
+                    break;
+            }
+        }
+
+        // Overloads
+        Type operator = (const Type& Value) {
+
+            assert (_baseObject != nullptr);
+            assert (_Set != nullptr);
+
+            (_baseObject ->*_Set)(Value);
+            return Value;
+        }
+
+        operator Type () {
+
+            assert (_baseObject != nullptr);
+            assert (_Get != nullptr);
+
+            return (_baseObject ->*_Get)();
+        }
+
+    private:
+
+        // Variables
+        Base* _baseObject;
+
+        // Function Pointers
+        void (Base::*_Set)(Type Value);
+        Type (Base::*_Get)();
     };
 }
-
-#endif // _WIN32 | _WIN64

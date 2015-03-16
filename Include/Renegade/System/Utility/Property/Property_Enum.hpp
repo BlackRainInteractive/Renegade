@@ -30,8 +30,14 @@
 
 #pragma once
 
-#if defined _WIN32 | _WIN64
-#include <Renegade/System/Utility/Win32/Utility_Win32.hpp>
-#endif
+// The Renegade namespace
+namespace rge {
 
-#include <Renegade/System/Utility/Property/Property.hpp>
+    // The property mode enum
+    enum class PropertyMode {
+
+        ReadOnly,
+        WriteOnly,
+        ReadWrite
+    };
+}
