@@ -52,6 +52,7 @@ namespace rge {
         void Create (Base* BaseType, Type (Base::*Getter)(), void (Base::*Setter)(Type Value), PropertyMode Mode = PropertyMode::ReadWrite) {
 
             _baseObject = BaseType;
+            _mode       = Mode;
 
             switch (Mode) {
 
@@ -72,18 +73,32 @@ namespace rge {
                     _Get = Getter;
                     _Set = Setter;
                     break;
-
-                default:
-
-                    _Get = nullptr;
-                    _Set = nullptr;
-                    break;
             }
+        }
+
+        Type Get () {
+
+            assert (_mode != PropertyMode::WriteOnly);
+            assert (_baseObject != nullptr);
+            assert (_Get != nullptr);
+
+            return (_baseObject ->*_Get)();
+        }
+
+        Type Set (const Type& Value) {
+
+            assert (_mode != PropertyMode::ReadOnly);
+            assert (_baseObject != nullptr);
+            assert (_Set != nullptr);
+
+            (_baseObject ->*_Set)(Value);
+            return Value;
         }
 
         // Overloads
         Type operator = (const Type& Value) {
 
+            assert (_mode != PropertyMode::ReadOnly);
             assert (_baseObject != nullptr);
             assert (_Set != nullptr);
 
@@ -93,6 +108,7 @@ namespace rge {
 
         operator Type () {
 
+            assert (_mode != PropertyMode::WriteOnly);
             assert (_baseObject != nullptr);
             assert (_Get != nullptr);
 
@@ -103,6 +119,7 @@ namespace rge {
 
         // Variables
         Base* _baseObject;
+        PropertyMode _mode;
 
         // Function Pointers
         void (Base::*_Set)(Type Value);
