@@ -32,6 +32,7 @@
 
 #if defined _WIN32 | _WIN64
 
+#include <Renegade/System/Utility/Property/Property.hpp>
 #include <Renegade/System/Window/Win32/Window_Win32_Enum.hpp>
 #include <Renegade/Math/Vector2f/Vector2f.hpp>
 #include <string>
@@ -67,25 +68,33 @@ namespace rge {
         // Functions
         void Create             (const WindowSettings& Settings);
         void Update             ();
-        HWND GetHWND            ();
-        Vector2f GetPosition    ();
-        void SetPosition        (const Vector2f& Position);
-        Vector2f GetSize        ();
-        void SetSize            (const Vector2f& Size);
-        void SetStyle           (WindowStyle Style);
-        std::string GetTitle    ();
-        void SetTitle           (const std::string& Title);
-        void SetVisible         (bool Visible);
         void Release            ();
+
+        // Properties
+        Property <Window, HWND>         hwnd;
+        Property <Window, Vector2f>     position;
+        Property <Window, Vector2f>     size;
+        Property <Window, WindowStyle>  style;
+        Property <Window, std::string>  title;
+        Property <Window, bool>         isVisible;
 
         // Variables
         bool isOpen, isActive;
-        WindowStyle style;
 
     private:
 
         // Functions
         LRESULT CALLBACK _WindowCallback (HWND Handle, UINT Message, WPARAM WParam, LPARAM LParam);
+        HWND _GetHWND            ();
+        Vector2f _GetPosition    ();
+        void _SetPosition        (Vector2f Position);
+        Vector2f _GetSize        ();
+        void _SetSize            (Vector2f Size);
+        WindowStyle _GetStyle    ();
+        void _SetStyle           (WindowStyle Style);
+        std::string _GetTitle    ();
+        void _SetTitle           (std::string Title);
+        void _SetVisible         (bool Visible);
 
         // Functions - Static
         static LRESULT CALLBACK _WndProc (HWND Handle, UINT Message, WPARAM WParam, LPARAM LParam);
@@ -93,6 +102,7 @@ namespace rge {
         // Variables
         HWND _handle;
         std::string _id;
+        WindowStyle _style;
     };
 }
 
