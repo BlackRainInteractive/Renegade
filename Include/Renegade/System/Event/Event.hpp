@@ -48,7 +48,7 @@ namespace rge {
 
         // Variables
         EventType type;
-        Keyboard keyCode;
+        KeyCode keyCode;
         Vector2f size;
         Vector2f position;
 

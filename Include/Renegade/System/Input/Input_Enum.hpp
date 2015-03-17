@@ -33,8 +33,8 @@
 // The Renegade namespace
 namespace rge {
 
-    // The Keyboard key enum
-    enum class Keyboard {
+    // The KeyCode key enum
+    enum class KeyCode {
 
         A,
         B,

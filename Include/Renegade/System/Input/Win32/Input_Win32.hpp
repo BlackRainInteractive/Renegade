@@ -43,7 +43,7 @@ namespace rge {
     public:
 
         // Functions - Static
-        static Keyboard MapVirtualKeyToRGE (WPARAM Key, LPARAM Flags);
+        static KeyCode MapVirtualKeyToRGE (WPARAM Key, LPARAM Flags);
     };
 }
 
