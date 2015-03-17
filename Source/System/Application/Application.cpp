@@ -41,7 +41,9 @@ namespace rge {
 /*============================================================================================================*/
 
     // The default constructor
-    Application::Application () : _isRunning (true) {
+    Application::Application () : currentContext (this, &_GetCurrentContext, nullptr, PropertyMode::ReadOnly),
+                                  currentWindow (this, &_GetCurrentWindow, nullptr, PropertyMode::ReadOnly),
+                                  _isRunning (true) {
 
     }
 
@@ -81,34 +83,6 @@ namespace rge {
 
 /*============================================================================================================*/
 
-    // Get the current context
-    Context* Application::GetCurrentContext () {
-
-        for (auto item : this -> _contextList) {
-
-            if (item -> isActive)
-                return (item);
-        }
-
-        return (nullptr);
-    }
-
-/*============================================================================================================*/
-
-    // Get the current window
-    Window* Application::GetCurrentWindow () {
-
-        for (auto item : this -> _windowList) {
-
-            if (item -> isActive)
-                return (item);
-        }
-
-        return (nullptr);
-    }
-
-/*============================================================================================================*/
-
     // Register a context
     void Application::RegisterContext (Context* Context) {
 
@@ -137,5 +111,35 @@ namespace rge {
             i -> Release ();
 
         this -> _isRunning = false;
+    }
+
+/*============================================================================================================*/
+/*------PRIVATE FUNCTIONS-------------------------------------------------------------------------------------*/
+/*============================================================================================================*/
+
+    // Get the current context
+    Context* Application::_GetCurrentContext () {
+
+        for (auto item : this -> _contextList) {
+
+            if (item -> isActive)
+                return (item);
+        }
+
+        return (nullptr);
+    }
+
+/*============================================================================================================*/
+
+    // Get the current window
+    Window* Application::_GetCurrentWindow () {
+
+        for (auto item : this -> _windowList) {
+
+            if (item -> isActive)
+                return (item);
+        }
+
+        return (nullptr);
     }
 }

@@ -31,6 +31,7 @@
 #pragma once
 
 #include <Renegade/System/Application/Application_Enum.hpp>
+#include <Renegade/System/Utility/Property/Property.hpp>
 #include <vector>
 
 // The Renegade namespace
@@ -49,11 +50,13 @@ namespace rge {
 
         // Functions
         bool IsRunning              ();
-        Context* GetCurrentContext  ();
-        Window* GetCurrentWindow    ();
         void RegisterContext        (Context* Context);
         void RegisterWindow         (Window* Window);
         void Exit                   ();
+
+        // Properties
+        Property <Application, Context*>    currentContext;
+        Property <Application, Window*>     currentWindow;
 
         // Variables - Static
         #if defined _WIN32 | _WIN64
@@ -67,6 +70,10 @@ namespace rge {
         #endif
 
     private:
+
+        // Functions
+        Context* _GetCurrentContext  ();
+        Window* _GetCurrentWindow    ();
 
         // Variables
         bool _isRunning;

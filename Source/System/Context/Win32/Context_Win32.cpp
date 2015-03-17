@@ -66,7 +66,6 @@ namespace rge {
         this -> stencilBits	    = Settings.stencilBits;
         this -> versionMajor	= Settings.versionMajor;
         this -> versionMinor	= Settings.versionMinor;
-        this -> clearColour	    = Settings.clearColour;
 
         // Create the pixel format descriptor
         PIXELFORMATDESCRIPTOR pfd;
@@ -131,7 +130,7 @@ namespace rge {
 
         // Make current and set clear colour
         this -> SetCurrent ();
-        this -> SetClearColour (this -> clearColour);
+        this -> clearColour = Settings.clearColour;
     }
 
 /*============================================================================================================*/
@@ -139,25 +138,13 @@ namespace rge {
     // Update the context
     void Context::Update () {
 
-        if (this ->isActive) {
+        if (this -> isActive) {
 
             SwapBuffers (this -> _deviceContext);
             glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
             if (wglGetCurrentContext () != this -> _glContext)
-                this ->isActive = false;
-        }
-    }
-
-/*============================================================================================================*/
-
-    // Set the context clear colour
-    void Context::SetClearColour (Vector4f Colour) {
-
-        if (this ->isActive) {
-
-            this -> clearColour = Colour;
-            glClearColor (Colour.x, Colour.y, Colour.z, Colour.w);
+                this -> isActive = false;
         }
     }
 
@@ -166,7 +153,7 @@ namespace rge {
     // Set context as current
     void Context::SetCurrent () {
 
-        this ->isActive = true;
+        this -> isActive = true;
         wglMakeCurrent (this -> _deviceContext, this -> _glContext);
     }
 
@@ -183,11 +170,33 @@ namespace rge {
     // Release the context
     void Context::Release () {
 
-        this ->isActive = false;
+        this -> isActive = false;
 
         wglMakeCurrent		(nullptr, nullptr);
         wglDeleteContext	(this -> _glContext);
         ReleaseDC			(this -> _windowHandle, this -> _deviceContext);
+    }
+
+/*============================================================================================================*/
+/*------PRIVATE FUNCTIONS-------------------------------------------------------------------------------------*/
+/*============================================================================================================*/
+
+    // Get the context clear colour
+    Vector4f Context::_GetClearColour () {
+
+        return (this -> _clearColour);
+    }
+
+/*============================================================================================================*/
+
+    // Set the context clear colour
+    void Context::_SetClearColour (Vector4f Colour) {
+
+        if (this -> isActive) {
+
+            this -> _clearColour = Colour;
+            glClearColor (Colour.x, Colour.y, Colour.z, Colour.w);
+        }
     }
 }
 
