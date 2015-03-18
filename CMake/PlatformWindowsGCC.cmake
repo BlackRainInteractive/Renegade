@@ -57,7 +57,8 @@ endif ()
 
 # Get Source Files
 file (GLOB_RECURSE REN_SOURCES "Source/*.cpp"
-                               "Include/*.hpp")
+                               "Include/*.hpp"
+                               "Include/*.inl")
 
 set (SOURCE_FILES "${REN_SOURCES}")
 

@@ -42,78 +42,17 @@ namespace rge {
     public:
 
         // Constructor / Destructor
-        Property () : _baseObject (nullptr), _Get (nullptr), _Set (nullptr) {}
-        Property (Base* BaseType, Type (Base::*Getter)(), void (Base::*Setter)(Type Value), PropertyMode Mode = PropertyMode::ReadWrite) {
-
-            Create (BaseType, Getter, Setter, Mode);
-        }
+        Property ();
+        Property (Base* BaseType, Type (Base::*Getter)(), void (Base::*Setter)(Type), PropertyMode Mode = PropertyMode::ReadWrite);
 
         // Functions
-        void Create (Base* BaseType, Type (Base::*Getter)(), void (Base::*Setter)(Type Value), PropertyMode Mode = PropertyMode::ReadWrite) {
+        void Create (Base* BaseType, Type (Base::*Getter)(), void (Base::*Setter)(Type Value), PropertyMode Mode = PropertyMode::ReadWrite);
+        Type Get ();
+        Type Set (const Type& Value);
 
-            _baseObject = BaseType;
-            _mode       = Mode;
-
-            switch (Mode) {
-
-                case PropertyMode::ReadOnly:
-
-                    _Get = Getter;
-                    _Set = nullptr;
-                    break;
-
-                case PropertyMode::WriteOnly:
-
-                    _Get = nullptr;
-                    _Set = Setter;
-                    break;
-
-                case PropertyMode::ReadWrite:
-
-                    _Get = Getter;
-                    _Set = Setter;
-                    break;
-            }
-        }
-
-        Type Get () {
-
-            assert (_mode != PropertyMode::WriteOnly);
-            assert (_baseObject != nullptr);
-            assert (_Get != nullptr);
-
-            return (_baseObject ->*_Get)();
-        }
-
-        Type Set (const Type& Value) {
-
-            assert (_mode != PropertyMode::ReadOnly);
-            assert (_baseObject != nullptr);
-            assert (_Set != nullptr);
-
-            (_baseObject ->*_Set)(Value);
-            return Value;
-        }
-
-        // Overloads
-        Type operator = (const Type& Value) {
-
-            assert (_mode != PropertyMode::ReadOnly);
-            assert (_baseObject != nullptr);
-            assert (_Set != nullptr);
-
-            (_baseObject ->*_Set)(Value);
-            return Value;
-        }
-
-        operator Type () {
-
-            assert (_mode != PropertyMode::WriteOnly);
-            assert (_baseObject != nullptr);
-            assert (_Get != nullptr);
-
-            return (_baseObject ->*_Get)();
-        }
+        // Operator overloads
+        operator Type ();
+        Type operator = (const Type& Value);
 
     private:
 
@@ -126,3 +65,5 @@ namespace rge {
         Type (Base::*_Get)();
     };
 }
+
+#include <Renegade/System/Utility/Property/Property.inl>
