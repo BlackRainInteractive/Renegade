@@ -15,7 +15,7 @@ int main() {
     app.RegisterWindow  (&window);
     app.RegisterContext (&context);
 
-    while (app.IsRunning ()) {
+    while (app.isRunning ()) {
 
         Event event;
 

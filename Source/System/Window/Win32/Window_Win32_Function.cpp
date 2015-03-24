@@ -46,14 +46,7 @@ namespace rge {
 /*============================================================================================================*/
 
     // The default constructor
-    Window::Window () : hwnd        (this, &_GetHWND, nullptr, PropertyMode::ReadOnly),
-                        position    (this, &_GetPosition, &_SetPosition),
-                        size        (this, &_GetSize, &_SetSize),
-                        style       (this, &_GetStyle, &_SetStyle),
-                        title       (this, &_GetTitle, &_SetTitle),
-                        isVisible   (this, nullptr, &_SetVisible, PropertyMode::WriteOnly),
-                        _id         (Utility::GenGUID ()) {
-
+    Window::Window () : _id (Utility::GenGUID ()) {
     }
 
 /*============================================================================================================*/
@@ -125,9 +118,9 @@ namespace rge {
         }
 
         // Set the style, size, and position
-        this -> _SetStyle    (Settings.style);
-        this -> _SetSize     (Settings.size);
-        this -> _SetPosition (winPos);
+        this -> setStyle     (Settings.style);
+        this -> setSize      (Settings.size);
+        this -> setPosition  (winPos);
     }
 
 /*============================================================================================================*/
@@ -157,6 +150,159 @@ namespace rge {
         // Destroy the window and unregister class
         DestroyWindow	(this -> _handle);
         UnregisterClass ((LPCSTR) this -> _id.c_str (), GetModuleHandle (0));
+    }
+
+/*============================================================================================================*/
+/*------GETTERS / SETTERS-------------------------------------------------------------------------------------*/
+/*============================================================================================================*/
+
+    // Get native window handle
+    HWND Window::getHandle () const {
+
+        return (this -> _handle);
+    }
+
+/*============================================================================================================*/
+
+    // Get the window position
+    Vector2f const Window::getPosition () const {
+
+        RECT rect;
+        GetWindowRect (this -> _handle, &rect);
+
+        return (Vector2f (rect.left, rect.top));
+    }
+
+/*============================================================================================================*/
+
+    // Set the window position
+    void Window::setPosition (Vector2f const& Position) {
+
+        SetWindowPos (this -> _handle, nullptr, (int) Position.x, (int) Position.y,
+                      0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
+    }
+
+/*============================================================================================================*/
+
+    // Get the window size
+    Vector2f const Window::getSize () const {
+
+        RECT rect;
+        GetClientRect (this -> _handle, &rect);
+
+        return (Vector2f (rect.right - rect.left, rect.bottom - rect.top));
+    }
+
+/*============================================================================================================*/
+
+    // Set window size
+    void Window::setSize (Vector2f const& Size) {
+
+        // Correct the window rect
+        RECT wr = {0, 0, (LONG) Size.x, (LONG) Size.y};
+        AdjustWindowRect (&wr, (DWORD) this -> _style, FALSE);
+
+        // Check if fullscreen
+        if (this -> _style == WindowStyle::Fullscreen ||
+                this -> _style == WindowStyle::FullscreenTransparent) {
+
+            // Create display settings
+            DEVMODE screenSettings;
+            screenSettings.dmSize       = sizeof (DEVMODE);
+            screenSettings.dmBitsPerPel = 32;
+            screenSettings.dmPelsWidth  = (DWORD) Size.x;
+            screenSettings.dmPelsHeight = (DWORD) Size.y;
+            screenSettings.dmFields     = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
+
+            // Set display as fullscreen
+            ChangeDisplaySettings (&screenSettings, CDS_FULLSCREEN);
+        }
+
+        SetWindowPos (this -> _handle, nullptr, 0, 0, (int) (wr.right - wr.left), (int) (wr.bottom - wr.top), SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
+    }
+
+/*============================================================================================================*/
+
+    // Get the window style
+    WindowStyle Window::getStyle () const {
+
+        return (this -> _style);
+    }
+
+/*============================================================================================================*/
+
+    // Set window style
+    void Window::setStyle (WindowStyle const& Style) {
+
+        // Set variables
+        this -> _style      = Style;
+        Vector2f winSize    = this -> getSize ();
+
+        // Do if fullscreen
+        if (Style == WindowStyle::Fullscreen || Style == WindowStyle::FullscreenTransparent) {
+
+            // Create display settings
+            DEVMODE screenSettings;
+            screenSettings.dmSize       = sizeof (DEVMODE);
+            screenSettings.dmBitsPerPel = 32;
+            screenSettings.dmPelsWidth  = (DWORD) winSize.x;
+            screenSettings.dmPelsHeight = (DWORD) winSize.y;
+            screenSettings.dmFields     = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
+
+            // Set display as fullscreen
+            ChangeDisplaySettings (&screenSettings, CDS_FULLSCREEN);
+        }
+
+        // Do if windowed
+        else
+            ChangeDisplaySettings (nullptr, 0);
+
+        // Set the window style
+        SetWindowLongPtr (this -> _handle, GWL_STYLE, (LONG_PTR) _style);
+
+        // Check for transparent window
+        if (Style == WindowStyle::BorderlessTransparent || Style == WindowStyle::FullscreenTransparent) {
+
+            // Enable transparency
+            DWM_BLURBEHIND bb = {DWM_BB_ENABLE | DWM_BB_BLURREGION,
+                                 TRUE,
+                                 CreateRectRgn (0, 0, -1, -1),
+                                 TRUE};
+
+            DwmEnableBlurBehindWindow (this -> _handle, &bb);
+        }
+
+        // Set the window as the main focus
+        ShowWindow			(this -> _handle, SW_SHOW);
+        SetForegroundWindow (this -> _handle);
+        SetFocus			(this -> _handle);
+    }
+
+/*============================================================================================================*/
+
+    // Get the window title
+    std::string const Window::getTitle () const {
+
+        TCHAR rawString [128];
+        GetWindowText (this -> _handle, rawString, 128);
+
+        return (std::string (rawString));
+    }
+
+/*============================================================================================================*/
+
+    // Set window title
+    void Window::setTitle (std::string const& Title) {
+
+        SetWindowText (this -> _handle, (LPCSTR) Title.c_str ());
+    }
+
+/*============================================================================================================*/
+
+    // Toggle the window visibility
+    void Window::setVisible (bool Visible) {
+
+        ShowWindow (this -> _handle, Visible ? SW_SHOW : SW_HIDE);
     }
 
 /*============================================================================================================*/
@@ -237,157 +383,6 @@ namespace rge {
 
         Event::PushEvent (ev);
         return (DefWindowProc (Handle, Message, WParam, LParam));
-    }
-
-/*============================================================================================================*/
-
-    // Get native window handle
-    HWND Window::_GetHWND () {
-
-        return (this -> _handle);
-    }
-
-/*============================================================================================================*/
-
-    // Get the window position
-    Vector2f Window::_GetPosition () {
-
-        RECT rect;
-        GetWindowRect (this -> _handle, &rect);
-
-        return (Vector2f (rect.left, rect.top));
-    }
-
-/*============================================================================================================*/
-
-    // Set the window position
-    void Window::_SetPosition (Vector2f Position) {
-
-        SetWindowPos (this -> _handle, nullptr, (int) Position.x, (int) Position.y,
-                0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
-    }
-
-/*============================================================================================================*/
-
-    // Get the window size
-    Vector2f Window::_GetSize () {
-
-        RECT rect;
-        GetClientRect (this -> _handle, &rect);
-
-        return (Vector2f (rect.right - rect.left, rect.bottom - rect.top));
-    }
-
-/*============================================================================================================*/
-
-    // Set window size
-    void Window::_SetSize (Vector2f Size) {
-
-        // Correct the window rect
-        RECT wr = {0, 0, (LONG) Size.x, (LONG) Size.y};
-        AdjustWindowRect (&wr, (DWORD) this -> _style, FALSE);
-
-        // Check if fullscreen
-        if (this -> _style == WindowStyle::Fullscreen ||
-                this -> _style == WindowStyle::FullscreenTransparent) {
-
-            // Create display settings
-            DEVMODE screenSettings;
-            screenSettings.dmSize       = sizeof (DEVMODE);
-            screenSettings.dmBitsPerPel = 32;
-            screenSettings.dmPelsWidth  = (DWORD) Size.x;
-            screenSettings.dmPelsHeight = (DWORD) Size.y;
-            screenSettings.dmFields     = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
-
-            // Set display as fullscreen
-            ChangeDisplaySettings (&screenSettings, CDS_FULLSCREEN);
-        }
-
-        SetWindowPos (this -> _handle, nullptr, 0, 0, (int) (wr.right - wr.left), (int) (wr.bottom - wr.top), SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
-    }
-
-/*============================================================================================================*/
-
-    // Get the window style
-    WindowStyle Window::_GetStyle () {
-
-        return (this -> _style);
-    }
-
-/*============================================================================================================*/
-
-    // Set window style
-    void Window::_SetStyle (WindowStyle Style) {
-
-        // Set variables
-        this -> _style      = Style;
-        Vector2f winSize    = this -> _GetSize ();
-
-        // Do if fullscreen
-        if (Style == WindowStyle::Fullscreen || Style == WindowStyle::FullscreenTransparent) {
-
-            // Create display settings
-            DEVMODE screenSettings;
-            screenSettings.dmSize       = sizeof (DEVMODE);
-            screenSettings.dmBitsPerPel = 32;
-            screenSettings.dmPelsWidth  = (DWORD) winSize.x;
-            screenSettings.dmPelsHeight = (DWORD) winSize.y;
-            screenSettings.dmFields     = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
-
-            // Set dirgeay as fullscreen
-            ChangeDisplaySettings (&screenSettings, CDS_FULLSCREEN);
-        }
-
-            // Do if windowed
-        else
-            ChangeDisplaySettings (nullptr, 0);
-
-        // Set the window style
-        SetWindowLongPtr (this -> _handle, GWL_STYLE, (LONG_PTR) _style);
-
-        // Check for transparent window
-        if (Style == WindowStyle::BorderlessTransparent || Style == WindowStyle::FullscreenTransparent) {
-
-            // Enable transparency
-            DWM_BLURBEHIND bb = {DWM_BB_ENABLE | DWM_BB_BLURREGION,
-                    TRUE,
-                    CreateRectRgn (0, 0, -1, -1),
-                    TRUE};
-
-            DwmEnableBlurBehindWindow (this -> _handle, &bb);
-        }
-
-        // Set the window as the main focus
-        ShowWindow			(this -> _handle, SW_SHOW);
-        SetForegroundWindow (this -> _handle);
-        SetFocus			(this -> _handle);
-    }
-
-/*============================================================================================================*/
-
-    // Get the window title
-    std::string Window::_GetTitle () {
-
-        TCHAR rawString [128];
-        GetWindowText (this -> _handle, rawString, 128);
-
-        return (std::string (rawString));
-    }
-
-/*============================================================================================================*/
-
-    // Set window title
-    void Window::_SetTitle (std::string Title) {
-
-        SetWindowText (this -> _handle, (LPCSTR) Title.c_str ());
-    }
-
-/*============================================================================================================*/
-
-    // Toggle the window visibility
-    void Window::_SetVisible (bool Visible) {
-
-        ShowWindow (this -> _handle, Visible ? SW_SHOW : SW_HIDE);
     }
 }
 

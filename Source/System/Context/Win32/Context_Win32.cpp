@@ -47,7 +47,7 @@ namespace rge {
     // Create the context (from rge window)
     void Context::Create (Window* Window, const ContextSettings& Settings) {
 
-        this -> Create (Window -> hwnd, GetDC (Window -> hwnd), Settings);
+        this -> Create (Window -> getHandle (), GetDC (Window -> getHandle ()), Settings);
     }
 
 /*============================================================================================================*/
@@ -129,8 +129,8 @@ namespace rge {
         }
 
         // Make current and set clear colour
-        this -> SetCurrent ();
-        this -> clearColour = Settings.clearColour;
+        this -> setCurrent      (true);
+        this -> setClearColour  (Settings.clearColour);
     }
 
 /*============================================================================================================*/
@@ -138,31 +138,11 @@ namespace rge {
     // Update the context
     void Context::Update () {
 
-        if (this -> isActive) {
+        if (this -> isCurrent ()) {
 
             SwapBuffers (this -> _deviceContext);
             glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-            if (wglGetCurrentContext () != this -> _glContext)
-                this -> isActive = false;
         }
-    }
-
-/*============================================================================================================*/
-
-    // Set context as current
-    void Context::SetCurrent () {
-
-        this -> isActive = true;
-        wglMakeCurrent (this -> _deviceContext, this -> _glContext);
-    }
-
-/*============================================================================================================*/
-
-    // Get the native context handle
-    HGLRC Context::GetHGLRC () {
-
-        return (this -> _glContext);
     }
 
 /*============================================================================================================*/
@@ -170,19 +150,41 @@ namespace rge {
     // Release the context
     void Context::Release () {
 
-        this -> isActive = false;
-
         wglMakeCurrent		(nullptr, nullptr);
         wglDeleteContext	(this -> _glContext);
         ReleaseDC			(this -> _windowHandle, this -> _deviceContext);
     }
 
 /*============================================================================================================*/
-/*------PRIVATE FUNCTIONS-------------------------------------------------------------------------------------*/
+/*------GETTERS / SETTERS-------------------------------------------------------------------------------------*/
+/*============================================================================================================*/
+
+    // Get the native context handle
+    HGLRC Context::getHandle () const {
+
+        return (this -> _glContext);
+    }
+
+/*============================================================================================================*/
+
+    // Check if the context is current
+    bool Context::isCurrent () const {
+
+        return (wglGetCurrentContext () == this -> _glContext);
+    }
+
+/*============================================================================================================*/
+
+    // Set context as current
+    void Context::setCurrent (bool const Current) {
+
+        Current ? wglMakeCurrent (this -> _deviceContext, this -> _glContext) : wglMakeCurrent (nullptr, nullptr);
+    }
+
 /*============================================================================================================*/
 
     // Get the context clear colour
-    Vector4f Context::_GetClearColour () {
+    Vector4f const Context::getClearColour  () const {
 
         return (this -> _clearColour);
     }
@@ -190,12 +192,12 @@ namespace rge {
 /*============================================================================================================*/
 
     // Set the context clear colour
-    void Context::_SetClearColour (Vector4f Colour) {
+    void Context::setClearColour (Vector4f const& ClearColour) {
 
-        if (this -> isActive) {
+        if (this -> isCurrent ()) {
 
-            this -> _clearColour = Colour;
-            glClearColor (Colour.x, Colour.y, Colour.z, Colour.w);
+            this -> _clearColour = ClearColour;
+            glClearColor (ClearColour.x, ClearColour.y, ClearColour.z, ClearColour.w);
         }
     }
 }

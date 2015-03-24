@@ -41,46 +41,12 @@ namespace rge {
 /*============================================================================================================*/
 
     // The default constructor
-    Application::Application () : currentContext (this, &_GetCurrentContext, nullptr, PropertyMode::ReadOnly),
-                                  currentWindow (this, &_GetCurrentWindow, nullptr, PropertyMode::ReadOnly),
-                                  _isRunning (true) {
+    Application::Application () : _isRunning (true) {
 
     }
 
 /*============================================================================================================*/
 /*------PUBLIC FUNCTIONS--------------------------------------------------------------------------------------*/
-/*============================================================================================================*/
-
-    // Check if is running
-    bool Application::IsRunning () {
-
-        // Check if running
-        if (this -> _isRunning) {
-
-            // Update all contexts
-            for (auto i : this -> _contextList) {
-
-                if (i -> isActive)
-                    i -> Update ();
-            }
-
-            // Update all windows
-            for (auto i : this -> _windowList) {
-
-                // Update window if open
-                if (i -> isOpen)
-                    i -> Update ();
-
-                    // Else remove the window from the list
-                else
-                    this -> _windowList.erase (std::remove (this -> _windowList.begin (),
-                                                            this -> _windowList.end (), i));
-            }
-        }
-
-        return (this -> _isRunning);
-    }
-
 /*============================================================================================================*/
 
     // Register a context
@@ -114,15 +80,48 @@ namespace rge {
     }
 
 /*============================================================================================================*/
-/*------PRIVATE FUNCTIONS-------------------------------------------------------------------------------------*/
+/*------GETTERS / SETTERS-------------------------------------------------------------------------------------*/
+/*============================================================================================================*/
+
+    // Check if running
+    bool Application::isRunning () {
+
+        // Check if running
+        if (this -> _isRunning) {
+
+            // Update all contexts
+            for (auto i : this -> _contextList)
+                i -> Update ();
+
+            // Update all windows
+            for (auto i : this -> _windowList) {
+
+                // Update window if open
+                if (i -> isOpen)
+                    i -> Update ();
+
+                // Else remove the window from the list
+                else {
+
+                    i -> Release ();
+
+                    this -> _windowList.erase (std::remove (this -> _windowList.begin (),
+                                               this -> _windowList.end (), i));
+                }
+            }
+        }
+
+        return (this -> _isRunning);
+    }
+
 /*============================================================================================================*/
 
     // Get the current context
-    Context* Application::_GetCurrentContext () {
+    Context* Application::getCurrentContext () const {
 
         for (auto item : this -> _contextList) {
 
-            if (item -> isActive)
+            if (item -> isCurrent ())
                 return (item);
         }
 
@@ -132,7 +131,7 @@ namespace rge {
 /*============================================================================================================*/
 
     // Get the current window
-    Window* Application::_GetCurrentWindow () {
+    Window* Application::getCurrentWindow () const {
 
         for (auto item : this -> _windowList) {
 

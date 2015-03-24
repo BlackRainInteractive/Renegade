@@ -34,7 +34,6 @@
 #define WIN32_LEAN_AND_MEAN
 
 #include <Renegade/Math/Vector4f/Vector4f.hpp>
-#include <Renegade/System/Utility/Property/Property.hpp>
 #include <windows.h>
 #include <vector>
 
@@ -74,22 +73,21 @@ namespace rge {
     class Context {
     public:
 
-        // Constructor / Destructor
-        Context () : clearColour (this, &_GetClearColour, &_SetClearColour) {}
-
         // Functions
         void Create             (Window* Window, const ContextSettings& Settings);
         void Create				(HWND Handle, HDC DeviceContext, const ContextSettings& Settings);
         void Update				();
-        void SetCurrent			();
-        HGLRC GetHGLRC          ();
         void Release			();
 
-        // Properties
-        Property <Context, Vector4f> clearColour;
+        // Getters / Setters
+        HGLRC           getHandle       () const;
+        bool            isCurrent       () const;
+        void            setCurrent      (bool const Current);
+        Vector4f const  getClearColour  () const;
+        void            setClearColour  (Vector4f const& ClearColour);
 
         // Variables
-        bool isActive;
+        //bool isActive;
         int	accumBits;
         int	alphaBits;
         int	colourBits;
@@ -99,10 +97,6 @@ namespace rge {
         int	versionMinor;
 
     private:
-
-        // Functions
-        Vector4f _GetClearColour    ();
-        void _SetClearColour        (Vector4f Colour);
 
         // Variables
         HDC		    _deviceContext;
