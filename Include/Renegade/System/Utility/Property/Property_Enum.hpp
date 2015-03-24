@@ -34,7 +34,7 @@
 namespace rge {
 
     // The property mode enum
-    enum class PropertyMode {
+    enum class PropertyMode : int{
 
         ReadOnly,
         WriteOnly,

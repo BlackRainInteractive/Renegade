@@ -34,7 +34,7 @@
 namespace rge {
 
     // The application platform enum
-    enum class Platform {
+    enum class Platform : int {
 
         Windows,
         Linux,

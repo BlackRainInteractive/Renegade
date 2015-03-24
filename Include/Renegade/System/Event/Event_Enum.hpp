@@ -34,7 +34,7 @@
 namespace rge {
 
     // The event type enum
-    enum class EventType {
+    enum class EventType : int {
 
         Create,
         Resize,

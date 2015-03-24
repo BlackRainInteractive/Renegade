@@ -34,7 +34,7 @@
 namespace rge {
 
     // The KeyCode key enum
-    enum class KeyCode {
+    enum class KeyCode : int {
 
         A,
         B,

@@ -39,7 +39,7 @@
 namespace rge {
 
     // The window style enum
-    enum class WindowStyle {
+    enum class WindowStyle : int {
 
         Borderless              = WS_VISIBLE,
         BorderlessTransparent   = WS_VISIBLE,

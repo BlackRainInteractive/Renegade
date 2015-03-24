@@ -6,10 +6,10 @@ int main() {
 
     Application app;
 
-    Window window;
+    Window window = Window ();
     window.Create (WindowSettings ());
 
-    Context context;
+    Context context = Context ();
     context.Create (&window, ContextSettings ());
 
     app.RegisterWindow  (&window);
