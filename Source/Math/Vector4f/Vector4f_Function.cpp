@@ -57,7 +57,7 @@ namespace rge {
 
 /*============================================================================================================*/
 
-    // Construct from x and y axis
+    // Construct from x, y, z, and w axis
     Vector4f::Vector4f (float XAxis, float YAxis, float ZAxis, float WAxis) : x (XAxis),
                                                                               y (YAxis),
                                                                               z (ZAxis),

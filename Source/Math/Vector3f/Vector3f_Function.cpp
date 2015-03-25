@@ -55,7 +55,7 @@ namespace rge {
 
 /*============================================================================================================*/
 
-    // Construct from x and y axis
+    // Construct from x, y, and z axis
     Vector3f::Vector3f (float XAxis, float YAxis, float ZAxis) : x (XAxis),
                                                                  y (YAxis),
                                                                  z (ZAxis) {
@@ -73,8 +73,8 @@ namespace rge {
 
     // Construct from Vector4f
     Vector3f::Vector3f (const Vector4f& Vector) : x (Vector.x),
-                                                   y (Vector.y),
-                                                   z (Vector.z) {
+                                                  y (Vector.y),
+                                                  z (Vector.z) {
     }
 
 /*============================================================================================================*/
