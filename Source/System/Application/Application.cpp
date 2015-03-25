@@ -84,7 +84,7 @@ namespace rge {
 /*============================================================================================================*/
 
     // Check if running
-    bool Application::isRunning () {
+    bool Application::IsRunning () {
 
         // Check if running
         if (this -> _isRunning) {
@@ -117,11 +117,11 @@ namespace rge {
 /*============================================================================================================*/
 
     // Get the current context
-    Context* Application::getCurrentContext () const {
+    Context* Application::GetCurrentContext () const {
 
         for (auto item : this -> _contextList) {
 
-            if (item -> isCurrent ())
+            if (item -> IsCurrent ())
                 return (item);
         }
 
@@ -131,7 +131,7 @@ namespace rge {
 /*============================================================================================================*/
 
     // Get the current window
-    Window* Application::getCurrentWindow () const {
+    Window* Application::GetCurrentWindow () const {
 
         for (auto item : this -> _windowList) {
 

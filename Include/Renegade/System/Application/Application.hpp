@@ -53,9 +53,9 @@ namespace rge {
         void Exit               ();
 
         // Getters / Setter
-        bool        isRunning           ();
-        Context*    getCurrentContext   () const;
-        Window*     getCurrentWindow    () const;
+        bool        IsRunning ();
+        Context*    GetCurrentContext   () const;
+        Window*     GetCurrentWindow    () const;
 
         // Variables - Static
         #if defined _WIN32 | _WIN64

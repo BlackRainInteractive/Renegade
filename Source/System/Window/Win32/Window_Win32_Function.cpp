@@ -118,9 +118,9 @@ namespace rge {
         }
 
         // Set the style, size, and position
-        this -> setStyle     (Settings.style);
-        this -> setSize      (Settings.size);
-        this -> setPosition  (winPos);
+        this->SetStyle (Settings.style);
+        this->SetSize (Settings.size);
+        this->SetPosition (winPos);
     }
 
 /*============================================================================================================*/
@@ -157,7 +157,7 @@ namespace rge {
 /*============================================================================================================*/
 
     // Get native window handle
-    HWND Window::getHandle () const {
+    HWND Window::GetHandle () const {
 
         return (this -> _handle);
     }
@@ -165,7 +165,7 @@ namespace rge {
 /*============================================================================================================*/
 
     // Get the window position
-    Vector2f const Window::getPosition () const {
+    Vector2f const Window::GetPosition () const {
 
         RECT rect;
         GetWindowRect (this -> _handle, &rect);
@@ -176,7 +176,7 @@ namespace rge {
 /*============================================================================================================*/
 
     // Set the window position
-    void Window::setPosition (Vector2f const& Position) {
+    void Window::SetPosition (Vector2f const& Position) {
 
         SetWindowPos (this -> _handle, nullptr, (int) Position.x, (int) Position.y,
                       0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
@@ -185,7 +185,7 @@ namespace rge {
 /*============================================================================================================*/
 
     // Get the window size
-    Vector2f const Window::getSize () const {
+    Vector2f const Window::GetSize () const {
 
         RECT rect;
         GetClientRect (this -> _handle, &rect);
@@ -196,7 +196,7 @@ namespace rge {
 /*============================================================================================================*/
 
     // Set window size
-    void Window::setSize (Vector2f const& Size) {
+    void Window::SetSize (Vector2f const& Size) {
 
         // Correct the window rect
         RECT wr = {0, 0, (LONG) Size.x, (LONG) Size.y};
@@ -224,7 +224,7 @@ namespace rge {
 /*============================================================================================================*/
 
     // Get the window style
-    WindowStyle Window::getStyle () const {
+    WindowStyle Window::GetStyle () const {
 
         return (this -> _style);
     }
@@ -232,11 +232,11 @@ namespace rge {
 /*============================================================================================================*/
 
     // Set window style
-    void Window::setStyle (WindowStyle const& Style) {
+    void Window::SetStyle (WindowStyle const& Style) {
 
         // Set variables
         this -> _style      = Style;
-        Vector2f winSize    = this -> getSize ();
+        Vector2f winSize    = this->GetSize ();
 
         // Do if fullscreen
         if (Style == WindowStyle::Fullscreen || Style == WindowStyle::FullscreenTransparent) {
@@ -281,7 +281,7 @@ namespace rge {
 /*============================================================================================================*/
 
     // Get the window title
-    std::string const Window::getTitle () const {
+    std::string const Window::GetTitle () const {
 
         TCHAR rawString [128];
         GetWindowText (this -> _handle, rawString, 128);
@@ -292,7 +292,7 @@ namespace rge {
 /*============================================================================================================*/
 
     // Set window title
-    void Window::setTitle (std::string const& Title) {
+    void Window::SetTitle (std::string const& Title) {
 
         SetWindowText (this -> _handle, (LPCSTR) Title.c_str ());
     }
@@ -300,7 +300,7 @@ namespace rge {
 /*============================================================================================================*/
 
     // Toggle the window visibility
-    void Window::setVisible (bool Visible) {
+    void Window::SetVisible (bool Visible) {
 
         ShowWindow (this -> _handle, Visible ? SW_SHOW : SW_HIDE);
     }

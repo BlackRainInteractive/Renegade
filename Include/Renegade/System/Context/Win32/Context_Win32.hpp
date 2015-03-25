@@ -80,11 +80,11 @@ namespace rge {
         void Release			();
 
         // Getters / Setters
-        HGLRC           getHandle       () const;
-        bool            isCurrent       () const;
-        void            setCurrent      (bool const Current);
-        Colour const    getClearColour  () const;
-        void            setClearColour  (Colour const& ClearColour);
+        HGLRC           GetHandle       () const;
+        bool            IsCurrent       () const;
+        void            SetCurrent      (bool const Current);
+        Colour const    GetClearColour  () const;
+        void            SetClearColour  (Colour const& ClearColour);
 
         // Variables
         //bool isActive;

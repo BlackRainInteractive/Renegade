@@ -70,16 +70,16 @@ namespace rge {
         void Release    ();
 
         // Getters / Setters
-        HWND                getHandle   () const;
-        Vector2f const      getPosition () const;
-        void                setPosition (Vector2f const& Position);
-        Vector2f const      getSize     () const;
-        void                setSize     (Vector2f const& Size);
-        WindowStyle         getStyle    () const;
-        void                setStyle    (WindowStyle const& Style);
-        std::string const   getTitle    () const;
-        void                setTitle    (std::string const& Title);
-        void                setVisible  (bool Visible);
+        HWND                GetHandle   () const;
+        Vector2f const      GetPosition () const;
+        void                SetPosition (Vector2f const& Position);
+        Vector2f const      GetSize     () const;
+        void                SetSize     (Vector2f const& Size);
+        WindowStyle         GetStyle    () const;
+        void                SetStyle    (WindowStyle const& Style);
+        std::string const   GetTitle    () const;
+        void                SetTitle    (std::string const& Title);
+        void                SetVisible  (bool Visible);
 
         // Variables
         bool isOpen, isActive;

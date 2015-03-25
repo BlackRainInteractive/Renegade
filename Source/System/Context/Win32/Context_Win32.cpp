@@ -47,7 +47,7 @@ namespace rge {
     // Create the context (from rge window)
     void Context::Create (Window* Window, const ContextSettings& Settings) {
 
-        this -> Create (Window -> getHandle (), GetDC (Window -> getHandle ()), Settings);
+        this -> Create (Window->GetHandle (), GetDC (Window->GetHandle ()), Settings);
     }
 
 /*============================================================================================================*/
@@ -129,8 +129,8 @@ namespace rge {
         }
 
         // Make current and set clear colour
-        this -> setCurrent      (true);
-        this -> setClearColour  (Settings.clearColour);
+        this->SetCurrent (true);
+        this->SetClearColour (Settings.clearColour);
     }
 
 /*============================================================================================================*/
@@ -138,7 +138,7 @@ namespace rge {
     // Update the context
     void Context::Update () {
 
-        if (this -> isCurrent ()) {
+        if (this->IsCurrent ()) {
 
             SwapBuffers (this -> _deviceContext);
             glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -160,7 +160,7 @@ namespace rge {
 /*============================================================================================================*/
 
     // Get the native context handle
-    HGLRC Context::getHandle () const {
+    HGLRC Context::GetHandle () const {
 
         return (this -> _glContext);
     }
@@ -168,7 +168,7 @@ namespace rge {
 /*============================================================================================================*/
 
     // Check if the context is current
-    bool Context::isCurrent () const {
+    bool Context::IsCurrent () const {
 
         return (wglGetCurrentContext () == this -> _glContext);
     }
@@ -176,7 +176,7 @@ namespace rge {
 /*============================================================================================================*/
 
     // Set context as current
-    void Context::setCurrent (bool const Current) {
+    void Context::SetCurrent (bool const Current) {
 
         Current ? wglMakeCurrent (this -> _deviceContext, this -> _glContext) : wglMakeCurrent (nullptr, nullptr);
     }
@@ -184,7 +184,7 @@ namespace rge {
 /*============================================================================================================*/
 
     // Get the context clear colour
-    Colour const Context::getClearColour  () const {
+    Colour const Context::GetClearColour () const {
 
         return (this -> _clearColour);
     }
@@ -192,9 +192,9 @@ namespace rge {
 /*============================================================================================================*/
 
     // Set the context clear colour
-    void Context::setClearColour (Colour const& ClearColour) {
+    void Context::SetClearColour (Colour const& ClearColour) {
 
-        if (this -> isCurrent ()) {
+        if (this->IsCurrent ()) {
 
             this -> _clearColour = ClearColour;
             glClearColor (ClearColour.r, ClearColour.g, ClearColour.b, ClearColour.a);
