@@ -28,9 +28,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*============================================================================================================*/
 
-#include <Renegade/Math/Vector3f/Vector3f.hpp>
-#include <Renegade/Math/Vector2f/Vector2f.hpp>
-#include <Renegade/Math/Vector4f/Vector4f.hpp>
+#include <Renegade/Math/Colour/Colour.hpp>
 
 // The Renegade namespace
 namespace rge {
@@ -40,52 +38,40 @@ namespace rge {
 /*============================================================================================================*/
 
     // The default constructor
-    Vector3f::Vector3f () : x (0),
-                            y (0),
-                            z (0) {
+    Colour::Colour () : r (0),
+                        g (0),
+                        b (0),
+                        a (0) {
     }
 
 /*============================================================================================================*/
 
     // Construct from single value
-    Vector3f::Vector3f (float Value) : x (Value),
-                                       y (Value),
-                                       z (Value) {
+    Colour::Colour (float Value) : r (Value),
+                                   g (Value),
+                                   b (Value),
+                                   a (Value) {
     }
 
 /*============================================================================================================*/
 
-    // Construct from x, y, and z axis
-    Vector3f::Vector3f (float XAxis, float YAxis, float ZAxis) : x (XAxis),
-                                                                 y (YAxis),
-                                                                 z (ZAxis) {
-    }
-
-/*============================================================================================================*/
-
-    // Construct from Vector2f
-    Vector3f::Vector3f (const Vector2f& Vector) : x (Vector.x),
-                                                  y (Vector.y),
-                                                  z (0) {
-    }
-
-/*============================================================================================================*/
-
-    // Construct from Vector4f
-    Vector3f::Vector3f (const Vector4f& Vector) : x (Vector.x),
-                                                  y (Vector.y),
-                                                  z (Vector.z) {
+    // Construct from rgba values
+    Colour::Colour (float Red, float Green, float Blue, float Alpha) : r (Red),
+                                                                       g (Green),
+                                                                       b (Blue),
+                                                                       a (Alpha) {
     }
 
 /*============================================================================================================*/
 /*------PUBLIC FUNCTIONS--------------------------------------------------------------------------------------*/
 /*============================================================================================================*/
 
-    // Format vector as string
-    std::string Vector3f::ToString () {
+    // Format colour as string
+    std::string Colour::ToString () {
 
-        return (std::to_string (this -> x) + ", " +
-                std::to_string (this -> y) + ", " +
-                std::to_string (this -> z) + "\n");
+        return (std::to_string (this -> r) + ", " +
+                std::to_string (this -> g) + ", " +
+                std::to_string (this -> b) + ", " +
+                std::to_string (this -> a) + "\n");
     }
 }

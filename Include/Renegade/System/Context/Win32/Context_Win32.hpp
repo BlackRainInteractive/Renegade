@@ -33,7 +33,7 @@
 #if defined _WIN32 | _WIN64
 #define WIN32_LEAN_AND_MEAN
 
-#include <Renegade/Math/Vector4f/Vector4f.hpp>
+#include <Renegade/Math/Colour/Colour.hpp>
 #include <windows.h>
 #include <vector>
 
@@ -54,7 +54,7 @@ namespace rge {
                              stencilBits    (24),
                              versionMajor	(3),
                              versionMinor	(1),
-                             clearColour	(Vector4f (0.24f, 0.24f, 0.24f, 1.0f)) {};
+                             clearColour	(Colour::darkGray) {};
 
         // Variables
         int	accumBits;
@@ -64,7 +64,7 @@ namespace rge {
         int	stencilBits;
         int	versionMajor;
         int	versionMinor;
-        Vector4f clearColour;
+        Colour clearColour;
     };
 
 /*============================================================================================================*/
@@ -80,11 +80,11 @@ namespace rge {
         void Release			();
 
         // Getters / Setters
-        HGLRC           getHandle       () const;
-        bool            isCurrent       () const;
-        void            setCurrent      (bool const Current);
-        Vector4f const  getClearColour  () const;
-        void            setClearColour  (Vector4f const& ClearColour);
+        HGLRC           GetHandle       () const;
+        bool            IsCurrent       () const;
+        void            SetCurrent      (bool const Current);
+        Colour const    GetClearColour  () const;
+        void            SetClearColour  (Colour const& ClearColour);
 
         // Variables
         //bool isActive;
@@ -102,7 +102,7 @@ namespace rge {
         HDC		    _deviceContext;
         HGLRC	    _glContext;
         HWND	    _windowHandle;
-        Vector4f    _clearColour;
+        Colour      _clearColour;
     };
 }
 

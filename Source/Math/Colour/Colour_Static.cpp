@@ -28,64 +28,39 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*============================================================================================================*/
 
-#include <Renegade/Math/Vector3f/Vector3f.hpp>
-#include <Renegade/Math/Vector2f/Vector2f.hpp>
-#include <Renegade/Math/Vector4f/Vector4f.hpp>
+#include <Renegade/Math/Colour/Colour.hpp>
+#include <Renegade/Math/Mathf/Mathf.hpp>
 
 // The Renegade namespace
 namespace rge {
 
 /*============================================================================================================*/
-/*------CONSTRUCTOR-------------------------------------------------------------------------------------------*/
+/*------STATIC VARIABLES--------------------------------------------------------------------------------------*/
 /*============================================================================================================*/
 
-    // The default constructor
-    Vector3f::Vector3f () : x (0),
-                            y (0),
-                            z (0) {
-    }
+    // Public
+    const Colour Colour::white      = Colour (1);
+    const Colour Colour::lightGray  = Colour (0.75f, 0.75f, 0.75f, 1);
+    const Colour Colour::gray       = Colour (0.5f, 0.5f, 0.5f, 1);
+    const Colour Colour::darkGray   = Colour (0.25f, 0.25f, 0.25f, 1);
+    const Colour Colour::black      = Colour (0, 0, 0, 1);
+    const Colour Colour::red        = Colour (1, 0, 0, 1);
+    const Colour Colour::yellow     = Colour (1, 1, 0, 1);
+    const Colour Colour::green      = Colour (0, 1, 0, 1);
+    const Colour Colour::cyan       = Colour (0, 1, 1, 1);
+    const Colour Colour::blue       = Colour (0, 0, 1, 1);
+    const Colour Colour::magenta    = Colour (1, 0, 1, 1);
 
 /*============================================================================================================*/
-
-    // Construct from single value
-    Vector3f::Vector3f (float Value) : x (Value),
-                                       y (Value),
-                                       z (Value) {
-    }
-
+/*------STATIC FUNCTIONS--------------------------------------------------------------------------------------*/
 /*============================================================================================================*/
 
-    // Construct from x, y, and z axis
-    Vector3f::Vector3f (float XAxis, float YAxis, float ZAxis) : x (XAxis),
-                                                                 y (YAxis),
-                                                                 z (ZAxis) {
-    }
+    // Lerp between two colours
+    Colour Colour::Lerp (const Colour& Start, const Colour& End, float Percentage) {
 
-/*============================================================================================================*/
-
-    // Construct from Vector2f
-    Vector3f::Vector3f (const Vector2f& Vector) : x (Vector.x),
-                                                  y (Vector.y),
-                                                  z (0) {
-    }
-
-/*============================================================================================================*/
-
-    // Construct from Vector4f
-    Vector3f::Vector3f (const Vector4f& Vector) : x (Vector.x),
-                                                  y (Vector.y),
-                                                  z (Vector.z) {
-    }
-
-/*============================================================================================================*/
-/*------PUBLIC FUNCTIONS--------------------------------------------------------------------------------------*/
-/*============================================================================================================*/
-
-    // Format vector as string
-    std::string Vector3f::ToString () {
-
-        return (std::to_string (this -> x) + ", " +
-                std::to_string (this -> y) + ", " +
-                std::to_string (this -> z) + "\n");
+        return (Colour (Start.r + (End.r - Start.r) * Mathf::Clamp (0, 1, Percentage),
+                        Start.g + (End.g - Start.g) * Mathf::Clamp (0, 1, Percentage),
+                        Start.b + (End.b - Start.b) * Mathf::Clamp (0, 1, Percentage),
+                        Start.a + (End.a - Start.a) * Mathf::Clamp (0, 1, Percentage)));
     }
 }

@@ -31,6 +31,7 @@
 #pragma once
 
 // Math
+#include <Renegade/Math/Colour/Colour.hpp>
 #include <Renegade/Math/Mathf/Mathf.hpp>
 #include <Renegade/Math/Matrix3f/Matrix3f.hpp>
 #include <Renegade/Math/Matrix4f/Matrix4f.hpp>
