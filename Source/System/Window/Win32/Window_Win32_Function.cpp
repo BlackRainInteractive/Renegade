@@ -356,6 +356,7 @@ namespace rge {
             case WM_CLOSE:
 
                 ev.type = EventType::Close;
+                this -> isOpen = false;
                 break;
 
             // Key Up
