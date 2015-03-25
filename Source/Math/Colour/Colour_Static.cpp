@@ -28,82 +28,39 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*============================================================================================================*/
 
-#pragma once
-
-#if defined _WIN32 | _WIN64
-#define WIN32_LEAN_AND_MEAN
-
 #include <Renegade/Math/Colour/Colour.hpp>
-#include <windows.h>
-#include <vector>
+#include <Renegade/Math/Mathf/Mathf.hpp>
 
 // The Renegade namespace
 namespace rge {
 
-    // Forward declare classes
-    class Window;
-
-    // The context settings struct
-    struct ContextSettings {
-
-        // Constructor
-        ContextSettings () : accumBits	    (32),
-                             alphaBits	    (32),
-                             colourBits	    (32),
-                             depthBits	    (24),
-                             stencilBits    (24),
-                             versionMajor	(3),
-                             versionMinor	(1),
-                             clearColour	(Colour::darkGray) {};
-
-        // Variables
-        int	accumBits;
-        int	alphaBits;
-        int	colourBits;
-        int	depthBits;
-        int	stencilBits;
-        int	versionMajor;
-        int	versionMinor;
-        Colour clearColour;
-    };
-
+/*============================================================================================================*/
+/*------STATIC VARIABLES--------------------------------------------------------------------------------------*/
 /*============================================================================================================*/
 
-    // The context class
-    class Context {
-    public:
+    // Public
+    const Colour Colour::white      = Colour (1);
+    const Colour Colour::lightGray  = Colour (0.75f, 0.75f, 0.75f, 1);
+    const Colour Colour::gray       = Colour (0.5f, 0.5f, 0.5f, 1);
+    const Colour Colour::darkGray   = Colour (0.25f, 0.25f, 0.25f, 1);
+    const Colour Colour::black      = Colour (0, 0, 0, 1);
+    const Colour Colour::red        = Colour (1, 0, 0, 1);
+    const Colour Colour::yellow     = Colour (1, 1, 0, 1);
+    const Colour Colour::green      = Colour (0, 1, 0, 1);
+    const Colour Colour::cyan       = Colour (0, 1, 1, 1);
+    const Colour Colour::blue       = Colour (0, 0, 1, 1);
+    const Colour Colour::magenta    = Colour (1, 0, 1, 1);
 
-        // Functions
-        void Create             (Window* Window, const ContextSettings& Settings);
-        void Create				(HWND Handle, HDC DeviceContext, const ContextSettings& Settings);
-        void Update				();
-        void Release			();
+/*============================================================================================================*/
+/*------STATIC FUNCTIONS--------------------------------------------------------------------------------------*/
+/*============================================================================================================*/
 
-        // Getters / Setters
-        HGLRC           getHandle       () const;
-        bool            isCurrent       () const;
-        void            setCurrent      (bool const Current);
-        Colour const    getClearColour  () const;
-        void            setClearColour  (Colour const& ClearColour);
+    // Lerp between two colours
+    Colour Colour::Lerp (const Colour& Start, const Colour& End, float Percentage) {
 
-        // Variables
-        //bool isActive;
-        int	accumBits;
-        int	alphaBits;
-        int	colourBits;
-        int	depthBits;
-        int	stencilBits;
-        int	versionMajor;
-        int	versionMinor;
-
-    private:
-
-        // Variables
-        HDC		    _deviceContext;
-        HGLRC	    _glContext;
-        HWND	    _windowHandle;
-        Colour      _clearColour;
-    };
+        return (Colour (Start.r + (End.r - Start.r) * Mathf::Clamp (0, 1, Percentage),
+                        Start.g + (End.g - Start.g) * Mathf::Clamp (0, 1, Percentage),
+                        Start.b + (End.b - Start.b) * Mathf::Clamp (0, 1, Percentage),
+                        Start.a + (End.a - Start.a) * Mathf::Clamp (0, 1, Percentage)));
+    }
 }
-
-#endif // _WIN32 | _WIN64

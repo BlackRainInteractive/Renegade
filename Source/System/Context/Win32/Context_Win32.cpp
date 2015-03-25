@@ -184,7 +184,7 @@ namespace rge {
 /*============================================================================================================*/
 
     // Get the context clear colour
-    Vector4f const Context::getClearColour  () const {
+    Colour const Context::getClearColour  () const {
 
         return (this -> _clearColour);
     }
@@ -192,12 +192,12 @@ namespace rge {
 /*============================================================================================================*/
 
     // Set the context clear colour
-    void Context::setClearColour (Vector4f const& ClearColour) {
+    void Context::setClearColour (Colour const& ClearColour) {
 
         if (this -> isCurrent ()) {
 
             this -> _clearColour = ClearColour;
-            glClearColor (ClearColour.x, ClearColour.y, ClearColour.z, ClearColour.w);
+            glClearColor (ClearColour.r, ClearColour.g, ClearColour.b, ClearColour.a);
         }
     }
 }

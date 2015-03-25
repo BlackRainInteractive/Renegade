@@ -28,82 +28,50 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*============================================================================================================*/
 
-#pragma once
-
-#if defined _WIN32 | _WIN64
-#define WIN32_LEAN_AND_MEAN
-
 #include <Renegade/Math/Colour/Colour.hpp>
-#include <windows.h>
-#include <vector>
 
 // The Renegade namespace
 namespace rge {
 
-    // Forward declare classes
-    class Window;
+/*============================================================================================================*/
+/*------CONSTRUCTOR-------------------------------------------------------------------------------------------*/
+/*============================================================================================================*/
 
-    // The context settings struct
-    struct ContextSettings {
-
-        // Constructor
-        ContextSettings () : accumBits	    (32),
-                             alphaBits	    (32),
-                             colourBits	    (32),
-                             depthBits	    (24),
-                             stencilBits    (24),
-                             versionMajor	(3),
-                             versionMinor	(1),
-                             clearColour	(Colour::darkGray) {};
-
-        // Variables
-        int	accumBits;
-        int	alphaBits;
-        int	colourBits;
-        int	depthBits;
-        int	stencilBits;
-        int	versionMajor;
-        int	versionMinor;
-        Colour clearColour;
-    };
+    // The default constructor
+    Colour::Colour () : r (0),
+                        g (0),
+                        b (0),
+                        a (0) {
+    }
 
 /*============================================================================================================*/
 
-    // The context class
-    class Context {
-    public:
+    // Construct from single value
+    Colour::Colour (float Value) : r (Value),
+                                   g (Value),
+                                   b (Value),
+                                   a (Value) {
+    }
 
-        // Functions
-        void Create             (Window* Window, const ContextSettings& Settings);
-        void Create				(HWND Handle, HDC DeviceContext, const ContextSettings& Settings);
-        void Update				();
-        void Release			();
+/*============================================================================================================*/
 
-        // Getters / Setters
-        HGLRC           getHandle       () const;
-        bool            isCurrent       () const;
-        void            setCurrent      (bool const Current);
-        Colour const    getClearColour  () const;
-        void            setClearColour  (Colour const& ClearColour);
+    // Construct from rgba values
+    Colour::Colour (float Red, float Green, float Blue, float Alpha) : r (Red),
+                                                                       g (Green),
+                                                                       b (Blue),
+                                                                       a (Alpha) {
+    }
 
-        // Variables
-        //bool isActive;
-        int	accumBits;
-        int	alphaBits;
-        int	colourBits;
-        int	depthBits;
-        int	stencilBits;
-        int	versionMajor;
-        int	versionMinor;
+/*============================================================================================================*/
+/*------PUBLIC FUNCTIONS--------------------------------------------------------------------------------------*/
+/*============================================================================================================*/
 
-    private:
+    // Format colour as string
+    std::string Colour::ToString () {
 
-        // Variables
-        HDC		    _deviceContext;
-        HGLRC	    _glContext;
-        HWND	    _windowHandle;
-        Colour      _clearColour;
-    };
+        return (std::to_string (this -> r) + ", " +
+                std::to_string (this -> g) + ", " +
+                std::to_string (this -> b) + ", " +
+                std::to_string (this -> a) + "\n");
+    }
 }
-
-#endif // _WIN32 | _WIN64
