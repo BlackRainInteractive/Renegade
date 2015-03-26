@@ -36,6 +36,7 @@
 #include <Renegade/Math/Colour/Colour.hpp>
 #include <windows.h>
 #include <vector>
+#include <Renegade/System/Window/Win32/Window_Win32.hpp>
 
 // The Renegade namespace
 namespace rge {
@@ -72,6 +73,10 @@ namespace rge {
     // The context class
     class Context {
     public:
+
+        // Constructor
+        Context () {};
+        Context (Window* Window, const ContextSettings& Settings);
 
         // Functions
         void Create             (Window* Window, const ContextSettings& Settings);

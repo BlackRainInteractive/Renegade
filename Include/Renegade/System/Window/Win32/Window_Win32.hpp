@@ -63,12 +63,13 @@ namespace rge {
 
         // Constructor / Destructor
         Window ();
+        Window (const WindowSettings& Settings);
 
         // Functions
-        void Create     (const WindowSettings& Settings);
-        void Update     ();
+        void Create             (const WindowSettings& Settings);
+        void Update             ();
         void EnableTransparency (bool Transparency);
-        void Release    ();
+        void Release            ();
 
         // Getters / Setters
         HWND                GetHandle   () const;
