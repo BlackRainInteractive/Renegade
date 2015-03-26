@@ -105,7 +105,7 @@ namespace rge {
         Vector2f winPos;
 
         // Set defualt position
-        if (Settings.style != WindowStyle::Fullscreen && Settings.style != WindowStyle::FullscreenTransparent) {
+        if (Settings.style != WindowStyle::Fullscreen) {
 
             winPos.x = (GetSystemMetrics (SM_CXSCREEN) - Settings.size.x) / 2;
             winPos.y = (GetSystemMetrics (SM_CYSCREEN) - Settings.size.y) / 2;
@@ -118,9 +118,10 @@ namespace rge {
         }
 
         // Set the style, size, and position
-        this->SetStyle (Settings.style);
-        this->SetSize (Settings.size);
-        this->SetPosition (winPos);
+        this -> SetStyle    (Settings.style);
+        this -> SetSize     (Settings.size);
+        this -> SetPosition (winPos);
+
     }
 
 /*============================================================================================================*/
@@ -135,6 +136,34 @@ namespace rge {
 
             TranslateMessage (&msg);
             DispatchMessage (&msg);
+        }
+    }
+
+/*============================================================================================================*/
+
+    // Enable or disable transparency
+    void Window::EnableTransparency (bool Transparency) {
+
+        DWM_BLURBEHIND bb;
+
+        if (Transparency) {
+
+            bb = {DWM_BB_ENABLE | DWM_BB_BLURREGION,
+                  TRUE,
+                  CreateRectRgn (0, 0, -1, -1),
+                  TRUE};
+
+            DwmEnableBlurBehindWindow (this->_handle, &bb);
+        }
+
+        else {
+
+            bb = {DWM_BB_ENABLE,
+                  FALSE,
+                  CreateRectRgn (0, 0, -1, -1),
+                  TRUE};
+
+            DwmEnableBlurBehindWindow (this -> _handle, &bb);
         }
     }
 
@@ -203,8 +232,7 @@ namespace rge {
         AdjustWindowRect (&wr, (DWORD) this -> _style, FALSE);
 
         // Check if fullscreen
-        if (this -> _style == WindowStyle::Fullscreen ||
-                this -> _style == WindowStyle::FullscreenTransparent) {
+        if (this -> _style == WindowStyle::Fullscreen) {
 
             // Create display settings
             DEVMODE screenSettings;
@@ -236,10 +264,10 @@ namespace rge {
 
         // Set variables
         this -> _style      = Style;
-        Vector2f winSize    = this->GetSize ();
+        Vector2f winSize    = this -> GetSize ();
 
         // Do if fullscreen
-        if (Style == WindowStyle::Fullscreen || Style == WindowStyle::FullscreenTransparent) {
+        if (Style == WindowStyle::Fullscreen) {
 
             // Create display settings
             DEVMODE screenSettings;
@@ -259,18 +287,6 @@ namespace rge {
 
         // Set the window style
         SetWindowLongPtr (this -> _handle, GWL_STYLE, (LONG_PTR) _style);
-
-        // Check for transparent window
-        if (Style == WindowStyle::BorderlessTransparent || Style == WindowStyle::FullscreenTransparent) {
-
-            // Enable transparency
-            DWM_BLURBEHIND bb = {DWM_BB_ENABLE | DWM_BB_BLURREGION,
-                                 TRUE,
-                                 CreateRectRgn (0, 0, -1, -1),
-                                 TRUE};
-
-            DwmEnableBlurBehindWindow (this -> _handle, &bb);
-        }
 
         // Set the window as the main focus
         ShowWindow			(this -> _handle, SW_SHOW);

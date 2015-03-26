@@ -42,11 +42,9 @@ namespace rge {
     enum class WindowStyle : int {
 
         Borderless              = WS_VISIBLE,
-        BorderlessTransparent   = WS_VISIBLE,
         Default                 = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_VISIBLE,
         Default_No_Resize       = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_VISIBLE,
         Fullscreen              = WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VISIBLE,
-        FullscreenTransparent   = WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VISIBLE
     };
 }
 

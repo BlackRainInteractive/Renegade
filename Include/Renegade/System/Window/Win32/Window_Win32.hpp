@@ -67,6 +67,7 @@ namespace rge {
         // Functions
         void Create     (const WindowSettings& Settings);
         void Update     ();
+        void EnableTransparency (bool Transparency);
         void Release    ();
 
         // Getters / Setters
