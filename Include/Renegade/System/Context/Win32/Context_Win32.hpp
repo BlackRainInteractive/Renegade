@@ -36,7 +36,6 @@
 #include <Renegade/Math/Colour/Colour.hpp>
 #include <windows.h>
 #include <vector>
-#include <Renegade/System/Window/Win32/Window_Win32.hpp>
 
 // The Renegade namespace
 namespace rge {
