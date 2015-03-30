@@ -35,10 +35,12 @@ endif ()
 
 # Set include directories
 include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/Include"
-                     "${CMAKE_CURRENT_SOURCE_DIR}/ExtDeps/glew/include")
+                     "${CMAKE_CURRENT_SOURCE_DIR}/ExtDeps/glew/include"
+                     "${CMAKE_CURRENT_SOURCE_DIR}/ExtDeps/OpenAL/include")
 
 # Set library directories
-link_directories ("${CMAKE_CURRENT_SOURCE_DIR}/ExtDeps/glew/lib/Win32-GCC")
+link_directories ("${CMAKE_CURRENT_SOURCE_DIR}/ExtDeps/glew/lib/Win32-GCC"
+                  "${CMAKE_CURRENT_SOURCE_DIR}/ExtDeps/OpenAL/lib/Win32-GCC")
 
 # Set binary output directory
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/Bin")
@@ -66,7 +68,7 @@ set (SOURCE_FILES "${REN_SOURCES}")
 add_executable (Renegade_Engine ${SOURCE_FILES})
 
 # Link libraries
-target_link_libraries (Renegade_Engine "Dwmapi" "rpcrt4" "glew32.dll" "opengl32")
+target_link_libraries (Renegade_Engine "Dwmapi" "glew32.dll" "OpenAL32.dll" "opengl32" "rpcrt4")
 
 # Set debug postfix
 set_target_properties (Renegade_Engine PROPERTIES DEBUG_POSTFIX "_d")
