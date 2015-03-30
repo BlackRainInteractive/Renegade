@@ -207,7 +207,7 @@ namespace rge {
         RECT rect;
         GetWindowRect (this -> _handle, &rect);
 
-        return (Vector2f (rect.left, rect.top));
+        return (Vector2f ((float) rect.left, (float) rect.top));
     }
 
 /*============================================================================================================*/
@@ -227,7 +227,7 @@ namespace rge {
         RECT rect;
         GetClientRect (this -> _handle, &rect);
 
-        return (Vector2f (rect.right - rect.left, rect.bottom - rect.top));
+        return (Vector2f ((float) (rect.right - rect.left), (float) (rect.bottom - rect.top)));
     }
 
 /*============================================================================================================*/
