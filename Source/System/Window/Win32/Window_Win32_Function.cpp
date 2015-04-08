@@ -29,7 +29,7 @@
 /*============================================================================================================*/
 
 
-#if defined _WIN32 | _WIN64
+#ifdef _WIN32
 #include <Renegade/System/Window/Win32/Window_Win32.hpp>
 #include <Renegade/System/Context/Win32/Context_Win32.hpp>
 #include <Renegade/System/Event/Event.hpp>
@@ -89,18 +89,6 @@ namespace rge {
         if (!RegisterClassEx (&windowClass))
             throw (Exception (__LINE__, __FILE__, "Win32 window could not be registered."));
 
-        // Create temp window, for the purpose of getting OpenGL extensions
-        HWND temp = CreateWindowEx (WS_EX_APPWINDOW, (LPCSTR) this -> _id.c_str (), "TEMP",
-                                    WS_POPUP, 0, 0, 640, 480, nullptr, nullptr, appInstance, nullptr);
-
-        // Check for errors
-        if (!temp)
-            throw (Exception (__LINE__, __FILE__, "Temp Win32 window creation failed."));
-
-        // Hide and destroy window
-        ShowWindow		(temp, SW_HIDE);
-        DestroyWindow	(temp);
-
         // Create the final window
         this -> _handle = CreateWindowEx (WS_EX_APPWINDOW, (LPCSTR) this -> _id.c_str (), (LPCSTR) Settings.title.c_str (),
                                          (DWORD) WindowStyle::Default, 0, 0, 640, 480, nullptr, nullptr,
@@ -129,7 +117,6 @@ namespace rge {
         this -> SetStyle    (Settings.style);
         this -> SetSize     (Settings.size);
         this -> SetPosition (winPos);
-
     }
 
 /*============================================================================================================*/
@@ -411,4 +398,4 @@ namespace rge {
     }
 }
 
-#endif // _WIN32 | _WIN64
+#endif // _WIN32
