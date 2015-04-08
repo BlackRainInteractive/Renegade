@@ -58,7 +58,7 @@ namespace rge {
         Window*     GetCurrentWindow    () const;
 
         // Variables - Static
-        #if defined _WIN32 | _WIN64
+        #ifdef _WIN32
             static const Platform platform = Platform::Windows;
         #elif defined __gnu_linux__
             static const Platform platform = Platform::Linux;

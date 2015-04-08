@@ -30,6 +30,6 @@
 
 #pragma once
 
-#if defined _WIN32 | _WIN64
+#ifdef _WIN32
     #include <Renegade/System/Context/Win32/Context_Win32.hpp>
 #endif

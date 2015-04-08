@@ -29,7 +29,7 @@
 /*============================================================================================================*/
 
 #pragma once
-#if defined _WIN32 | _WIN64
+#ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 
 #include <Renegade/System/Input/Input_Enum.hpp>
@@ -47,4 +47,4 @@ namespace rge {
     };
 }
 
-#endif // _WIN32 | _WIN64
+#endif // _WIN32

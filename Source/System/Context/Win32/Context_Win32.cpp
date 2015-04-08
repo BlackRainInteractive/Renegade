@@ -28,7 +28,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*============================================================================================================*/
 
-#if defined _WIN32 | _WIN64
+#ifdef _WIN32
 
 #include <Renegade/System/Context/Win32/Context_Win32.hpp>
 #include <Renegade/System/Window/Win32/Window_Win32.hpp>
@@ -212,4 +212,4 @@ namespace rge {
     }
 }
 
-#endif // _WIN32 | _WIN64
+#endif // _WIN32

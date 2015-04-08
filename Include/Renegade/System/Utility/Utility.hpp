@@ -30,7 +30,7 @@
 
 #pragma once
 
-#if defined _WIN32 | _WIN64
+#ifdef _WIN32
 #include <Renegade/System/Utility/Win32/Utility_Win32.hpp>
 #endif
 
