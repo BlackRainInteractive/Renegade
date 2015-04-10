@@ -31,7 +31,7 @@
 #include <Renegade/Core/Application/Application.hpp>
 
 #ifdef _WIN32
-    #include <Renegade/Core/NativeWindow/Detail/NativeWindow_Win32.hpp>
+    #include <Renegade/Core/WindowSurface/Detail/WindowSurface_Win32.hpp>
 #endif
 
 // The Renegade namespace
@@ -46,7 +46,7 @@ namespace rge {
 
         // Initialize systems
         #ifdef _WIN32
-            this -> _nativeWindow = std::make_unique <detail::NativeWindow_Win32> (this);
+            this -> _nativeWindow = std::make_unique <detail::WindowSurface_Win32> (this);
         #endif
 
         this -> _nativeWindow -> Create (Vector2f (800, 600), "Test", WBS_Default);

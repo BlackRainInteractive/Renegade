@@ -30,7 +30,7 @@
 
 #pragma once
 
-#include <Renegade/Core/NativeWindow/NativeWindow_Enum.hpp>
+#include <Renegade/Core/WindowSurface/WindowSurface_Enum.hpp>
 #include <Renegade/Math/Vector2f/Vector2f.hpp>
 #include <string>
 
@@ -40,14 +40,14 @@ namespace rge {
     // Forward declarations
     class Application_New;
 
-    // The native window class
-    class NativeWindow {
+    // The window surface class
+    class WindowSurface {
     public:
 
         // Constructor / Destructor
-        NativeWindow            () : application (nullptr)  {};
-        NativeWindow            (Application_New* Application);
-        virtual ~NativeWindow   () {};
+        WindowSurface            () : application (nullptr)  {};
+        WindowSurface            (Application_New* Application);
+        virtual ~WindowSurface   () {};
 
         // Functions
         virtual void Create     (const Vector2f& Size, const std::string& Title, const WindowBorderStyle Style) = 0;

@@ -28,7 +28,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*============================================================================================================*/
 
-#include <Renegade/Core/NativeWindow/Detail/NativeWindow_Win32.hpp>
+#include <Renegade/Core/WindowSurface/Detail/WindowSurface_Win32.hpp>
 #include <Renegade/System/Exception/Exception.hpp>
 #include <Renegade/System/Utility/Win32/Utility_Win32.hpp>
 
@@ -43,7 +43,7 @@ namespace rge {
 /*============================================================================================================*/
 
         // Construct with application specified
-        NativeWindow_Win32::NativeWindow_Win32 (Application_New* Application) : NativeWindow::NativeWindow (Application) {
+        WindowSurface_Win32::WindowSurface_Win32 (Application_New* Application) : WindowSurface::WindowSurface (Application) {
 
         }
 
@@ -52,7 +52,7 @@ namespace rge {
 /*============================================================================================================*/
 
         // Create the window
-        void NativeWindow_Win32::Create (const Vector2f& Size, const std::string& Title, const WindowBorderStyle Style) {
+        void WindowSurface_Win32::Create (const Vector2f& Size, const std::string& Title, const WindowBorderStyle Style) {
 
             // Set variables
             this -> _id = Utility::GenGUID ();
@@ -110,7 +110,7 @@ namespace rge {
 
 /*============================================================================================================*/
 
-        void NativeWindow_Win32::Update () {
+        void WindowSurface_Win32::Update () {
 
             MSG msg;
 
@@ -124,7 +124,7 @@ namespace rge {
 
 /*============================================================================================================*/
 
-        void NativeWindow_Win32::Release () {
+        void WindowSurface_Win32::Release () {
 
             // Destroy the window and unregister class
             DestroyWindow	(this -> _hwnd);
@@ -135,7 +135,7 @@ namespace rge {
 /*------GETTERS / SETTERS-------------------------------------------------------------------------------------*/
 /*============================================================================================================*/
 
-        Vector2f const NativeWindow_Win32::GetPosition () const {
+        Vector2f const WindowSurface_Win32::GetPosition () const {
 
             RECT rect;
             GetWindowRect (this -> _hwnd, &rect);
@@ -145,7 +145,7 @@ namespace rge {
 
 /*============================================================================================================*/
 
-        void NativeWindow_Win32::SetPosition (Vector2f const& Position) {
+        void WindowSurface_Win32::SetPosition (Vector2f const& Position) {
 
             SetWindowPos (this -> _hwnd, nullptr, (int) Position.x, (int) Position.y,
                           0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
@@ -153,7 +153,7 @@ namespace rge {
 
 /*============================================================================================================*/
 
-        Vector2f const NativeWindow_Win32::GetSize () const {
+        Vector2f const WindowSurface_Win32::GetSize () const {
 
             RECT rect;
             GetClientRect (this -> _hwnd, &rect);
@@ -163,7 +163,7 @@ namespace rge {
 
 /*============================================================================================================*/
 
-        void NativeWindow_Win32::SetSize (Vector2f const& Size) {
+        void WindowSurface_Win32::SetSize (Vector2f const& Size) {
 
             // Correct the window rect
             RECT wr = {0, 0, (LONG) Size.x, (LONG) Size.y};
@@ -189,14 +189,14 @@ namespace rge {
 
 /*============================================================================================================*/
 
-        WindowBorderStyle NativeWindow_Win32::GetStyle () const {
+        WindowBorderStyle WindowSurface_Win32::GetStyle () const {
 
             return (this -> _windowBorderStyle);
         }
 
 /*============================================================================================================*/
 
-        void NativeWindow_Win32::SetStyle (const WindowBorderStyle& Style) {
+        void WindowSurface_Win32::SetStyle (const WindowBorderStyle& Style) {
 
             // Set variables
             this -> _windowBorderStyle  = Style;
@@ -232,7 +232,7 @@ namespace rge {
 
 /*============================================================================================================*/
 
-        std::string const NativeWindow_Win32::GetTitle () const {
+        std::string const WindowSurface_Win32::GetTitle () const {
 
             TCHAR rawString [128];
             GetWindowText (this -> _hwnd, rawString, 128);
@@ -242,7 +242,7 @@ namespace rge {
 
 /*============================================================================================================*/
 
-        void NativeWindow_Win32::SetTitle (std::string const& Title) {
+        void WindowSurface_Win32::SetTitle (std::string const& Title) {
 
             SetWindowText (this -> _hwnd, (LPCSTR) Title.c_str ());
         }
@@ -251,7 +251,7 @@ namespace rge {
 /*------PROTECTED FUNCTIONS-----------------------------------------------------------------------------------*/
 /*============================================================================================================*/
 
-        int NativeWindow_Win32::BorderStyleToNative (WindowBorderStyle Style) {
+        int WindowSurface_Win32::BorderStyleToNative (WindowBorderStyle Style) {
 
             switch (Style) {
 
@@ -276,7 +276,7 @@ namespace rge {
 /*------PRIVATE FUNCTIONS-------------------------------------------------------------------------------------*/
 /*============================================================================================================*/
 
-        LRESULT NativeWindow_Win32::_WindowCallback (HWND Handle, UINT Message, WPARAM WParam, LPARAM LParam) {
+        LRESULT WindowSurface_Win32::_WindowCallback (HWND Handle, UINT Message, WPARAM WParam, LPARAM LParam) {
 
             //Event ev;
 
@@ -356,14 +356,14 @@ namespace rge {
 /*------PRIVATE STATIC FUNCTIONS------------------------------------------------------------------------------*/
 /*============================================================================================================*/
 
-        LRESULT NativeWindow_Win32::_WndProc (HWND Handle, UINT Message, WPARAM WParam, LPARAM LParam) {
+        LRESULT WindowSurface_Win32::_WndProc (HWND Handle, UINT Message, WPARAM WParam, LPARAM LParam) {
 
             // Check if window was created
             if (Message == WM_CREATE)
                 SetWindowLongPtr (Handle, GWLP_USERDATA, (LONG_PTR) (LPCREATESTRUCT (LParam) -> lpCreateParams));
 
             // Get the pointer to the current window
-            NativeWindow_Win32* win = (NativeWindow_Win32*) GetWindowLongPtr (Handle, GWLP_USERDATA);
+            WindowSurface_Win32* win = (WindowSurface_Win32*) GetWindowLongPtr (Handle, GWLP_USERDATA);
 
             if (win)
                 return (win -> _WindowCallback (Handle, Message, WParam, LParam));

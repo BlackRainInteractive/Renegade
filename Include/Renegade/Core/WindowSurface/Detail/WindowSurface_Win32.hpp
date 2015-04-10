@@ -28,17 +28,57 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*============================================================================================================*/
 
-#include <Renegade/Core/NativeWindow/NativeWindow.hpp>
+#pragma once
+
+#define WIN32_LEAN_AND_MEAN
+
+#include <Renegade/Core/WindowSurface/WindowSurface.hpp>
+#include <windows.h>
 
 // The Renegade namespace
 namespace rge {
 
-/*============================================================================================================*/
-/*------CONSTRUCTOR-------------------------------------------------------------------------------------------*/
-/*============================================================================================================*/
+    // The detail namespace
+    namespace detail {
 
-    // Construct with application specified
-    NativeWindow::NativeWindow (Application_New* Application) : application (Application) {
+        // The Win32 window surface class
+        class WindowSurface_Win32 : public WindowSurface {
+        public:
 
+            // Constructor / Destructor
+            WindowSurface_Win32 () : WindowSurface::WindowSurface () {};
+            WindowSurface_Win32 (Application_New* Application);
+
+            // Functions
+            void Create     (const Vector2f& Size, const std::string& Title, const WindowBorderStyle Style) override;
+            void Update     () override;
+            void Release    () override;
+
+            // Getters / Setters
+            Vector2f const      GetPosition () const override;
+            void                SetPosition (Vector2f const& Position) override;
+            Vector2f const      GetSize     () const override;
+            void                SetSize     (Vector2f const& Size) override;
+            WindowBorderStyle   GetStyle    () const override;
+            void                SetStyle    (const WindowBorderStyle& Style) override;
+            std::string const   GetTitle    () const override;
+            void                SetTitle    (std::string const& Title) override;
+
+        protected:
+
+            // Functions
+            int BorderStyleToNative (WindowBorderStyle Style) override;
+
+        private:
+
+            // Functions
+            LRESULT CALLBACK _WindowCallback (HWND Handle, UINT Message, WPARAM WParam, LPARAM LParam);
+
+            // Functions - Static
+            static LRESULT CALLBACK _WndProc (HWND Handle, UINT Message, WPARAM WParam, LPARAM LParam);
+
+            // Variables
+            HWND _hwnd;
+        };
     }
 }

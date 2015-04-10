@@ -31,7 +31,7 @@
 #pragma once
 
 #include <Renegade/Core/Application/Application_Enum.hpp>
-#include <Renegade/Core/NativeWindow/NativeWindow.hpp>
+#include <Renegade/Core/WindowSurface/WindowSurface.hpp>
 #include <memory>
 
 // The Renegade namespace
@@ -46,11 +46,11 @@ namespace rge {
         void Shutdown   ();
 
         // Getters / Setters
-        NativeWindow* GetNativeWindow ();
+        WindowSurface* GetWindowSurface ();
 
     private:
 
         // Variables
-        std::unique_ptr <NativeWindow> _nativeWindow;
+        std::unique_ptr <WindowSurface> _nativeWindow;
     };
 }
