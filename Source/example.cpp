@@ -1,37 +1,32 @@
-#include <Renegade/Renegade.hpp>
+#include <Renegade/Core/Application/Application.hpp>
 
 using namespace rge;
 
-int main() {
+int main () {
 
-    Application app;
+    Application_New application_new = Application_New ();
+    application_new.Initialize ();
 
-    Window window = Window ();
-    window.Create (WindowSettings ());
+    EventManager* eventManager = application_new.GetEventManager ();
 
-    Context context = Context ();
-    context.Create (&window, ContextSettings ());
+    Event event;
 
-    app.RegisterWindow  (&window);
-    app.RegisterContext (&context);
+    while (application_new.Update ()) {
 
-    while (app.IsRunning ()) {
+        while (eventManager -> PollEvents (event)) {
 
-        Event event;
+            switch (event.eventType) {
 
-        while (Event::PollEvents (event)) {
+                case ET_AppInit:
+                    break;
 
-            switch (event.type) {
-
-                case EventType::Close:
-                case EventType::KeyDown:
-                    app.Exit ();
-
-                default:
+                case ET_AppShutdown:
                     break;
             }
         }
     }
+
+    application_new.Shutdown ();
 
     return 0;
 }

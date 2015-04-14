@@ -30,31 +30,23 @@
 
 #pragma once
 
-#include <Renegade/Core/Application/Application_Enum.hpp>
-#include <Renegade/Core/EventManager/EventManager.hpp>
-#include <Renegade/Core/WindowSurface/WindowSurface.hpp>
-#include <memory>
+#include <Renegade/Core/EventManager/Event.hpp>
+#include <vector>
 
 // The Renegade namespace
 namespace rge {
 
-    // The Application class
-    class Application_New {
+    // The event manager class
+    class EventManager {
     public:
 
         // Functions
-        void Initialize ();
-        bool Update     ();
-        void Shutdown   ();
-
-        // Getters / Setters
-        EventManager*   GetEventManager     ();
-        WindowSurface*  GetWindowSurface    ();
+        void PushEvent  (Event Event);
+        bool PollEvents (Event& Event);
 
     private:
 
         // Variables
-        std::unique_ptr <EventManager>  _eventManager;
-        std::unique_ptr <WindowSurface> _nativeWindow;
+        std::vector <Event> _eventList;
     };
 }

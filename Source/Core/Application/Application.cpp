@@ -29,6 +29,7 @@
 /*============================================================================================================*/
 
 #include <Renegade/Core/Application/Application.hpp>
+#include <Renegade/Core/EventManager/EventManager.hpp>
 
 #ifdef _WIN32
     #include <Renegade/Core/WindowSurface/Detail/WindowSurface_Win32.hpp>
@@ -45,11 +46,30 @@ namespace rge {
     void Application_New::Initialize () {
 
         // Initialize systems
+        this -> _eventManager = std::make_unique <EventManager> ();
+
         #ifdef _WIN32
             this -> _nativeWindow = std::make_unique <detail::WindowSurface_Win32> (this);
         #endif
 
         this -> _nativeWindow -> Create (Vector2f (800, 600), "Test", WBS_Default);
+
+        // Push init event
+        Event event;
+        event.eventType = ET_AppInit;
+
+        this -> _eventManager -> PushEvent (event);
+    }
+
+/*============================================================================================================*/
+
+    // Update and poll for events
+    bool Application_New::Update () {
+
+        // Update all systems
+        this -> _nativeWindow -> Update ();
+
+        return true;
     }
 
 /*============================================================================================================*/
@@ -57,7 +77,31 @@ namespace rge {
     // Shutdown the application
     void Application_New::Shutdown () {
 
+        // Push shutdown event
+        Event event;
+        event.eventType = ET_AppShutdown;
+
+        this -> _eventManager -> PushEvent (event);
+
         // Release all systems
         this -> _nativeWindow -> Release ();
+    }
+
+/*============================================================================================================*/
+/*------GETTERS / SETTERS-------------------------------------------------------------------------------------*/
+/*============================================================================================================*/
+
+    // Get the event manager
+    EventManager* Application_New::GetEventManager () {
+
+        return (this -> _eventManager ? this -> _eventManager.get () : nullptr);
+    }
+
+/*============================================================================================================*/
+
+    // Get the window surface
+    WindowSurface* Application_New::GetWindowSurface () {
+
+        return (this -> _nativeWindow ? this -> _nativeWindow.get () : nullptr);
     }
 }

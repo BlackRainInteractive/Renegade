@@ -30,31 +30,23 @@
 
 #pragma once
 
-#include <Renegade/Core/Application/Application_Enum.hpp>
-#include <Renegade/Core/EventManager/EventManager.hpp>
-#include <Renegade/Core/WindowSurface/WindowSurface.hpp>
-#include <memory>
-
 // The Renegade namespace
 namespace rge {
 
-    // The Application class
-    class Application_New {
+    // The event type enum
+    enum EventType {
+
+        ET_AppInit      = 0x01,
+        ET_AppShutdown  = 0x02
+    };
+
+/*============================================================================================================*/
+
+    // The event struct
+    struct Event {
     public:
 
-        // Functions
-        void Initialize ();
-        bool Update     ();
-        void Shutdown   ();
-
-        // Getters / Setters
-        EventManager*   GetEventManager     ();
-        WindowSurface*  GetWindowSurface    ();
-
-    private:
-
         // Variables
-        std::unique_ptr <EventManager>  _eventManager;
-        std::unique_ptr <WindowSurface> _nativeWindow;
+        EventType eventType;
     };
 }

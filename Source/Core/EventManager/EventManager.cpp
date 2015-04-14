@@ -28,33 +28,34 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*============================================================================================================*/
 
-#pragma once
-
-#include <Renegade/Core/Application/Application_Enum.hpp>
 #include <Renegade/Core/EventManager/EventManager.hpp>
-#include <Renegade/Core/WindowSurface/WindowSurface.hpp>
-#include <memory>
 
 // The Renegade namespace
 namespace rge {
 
-    // The Application class
-    class Application_New {
-    public:
+/*============================================================================================================*/
+/*------PUBLIC FUNCTIONS--------------------------------------------------------------------------------------*/
+/*============================================================================================================*/
 
-        // Functions
-        void Initialize ();
-        bool Update     ();
-        void Shutdown   ();
+    // Push an event to the event que
+    void EventManager::PushEvent (Event Event) {
 
-        // Getters / Setters
-        EventManager*   GetEventManager     ();
-        WindowSurface*  GetWindowSurface    ();
+        this -> _eventList.push_back (Event);
+    }
 
-    private:
+/*============================================================================================================*/
 
-        // Variables
-        std::unique_ptr <EventManager>  _eventManager;
-        std::unique_ptr <WindowSurface> _nativeWindow;
-    };
+    // Poll the event manager for events
+    bool EventManager::PollEvents (Event& Event) {
+
+        if (this -> _eventList.size () > 0) {
+
+            Event = this -> _eventList [this -> _eventList.size () - 1];
+            this -> _eventList.pop_back ();
+
+            return true;
+        }
+
+        return false;
+    }
 }
