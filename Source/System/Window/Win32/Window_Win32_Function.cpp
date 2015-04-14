@@ -148,7 +148,7 @@ namespace rge {
                   CreateRectRgn (0, 0, -1, -1),
                   TRUE};
 
-            DwmEnableBlurBehindWindow (this->_handle, &bb);
+            DwmEnableBlurBehindWindow (this -> _handle, &bb);
         }
 
         else {

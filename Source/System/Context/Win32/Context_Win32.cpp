@@ -148,7 +148,7 @@ namespace rge {
     // Update the context
     void Context::Update () {
 
-        if (this->IsCurrent ()) {
+        if (this -> IsCurrent ()) {
 
             SwapBuffers (this -> _deviceContext);
             glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
